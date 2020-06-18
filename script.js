@@ -66,7 +66,7 @@ $(document).ready(function () {
 
     //url for forecast
     var todayURL =
-      "http://api.openweathermap.org/data/2.5/weather?q=" +
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
       city +
       "&units=imperial&appid=" +
       apiKey;
@@ -84,7 +84,7 @@ $(document).ready(function () {
         $("#date-time").append($("<h4>" + dateDisplay + "</h4>"));
         //   console.log("current date", dateDisplay);
         var icon =
-          "http://openweathermap.org/img/w/" +
+          "https://openweathermap.org/img/w/" +
           response.weather[0].icon +
           ".png";
         $("#icon").attr("src", icon);
@@ -143,7 +143,7 @@ $(document).ready(function () {
     // queryURL for API call
 
     var queryURL =
-      "http://api.openweathermap.org/data/2.5/forecast?q=" +
+      "https://api.openweathermap.org/data/2.5/forecast?q=" +
       city +
       "&units=imperial&appid=" +
       apiKey;
@@ -168,7 +168,7 @@ $(document).ready(function () {
             .add(i + 1, "d")
             .format("MMMM Do");
           var fiveDayIcon =
-            "http://openweathermap.org/img/w/" +
+            "https://openweathermap.org/img/w/" +
             forecast.weather[0].icon +
             ".png";
           var fiveDayTemp = $(
