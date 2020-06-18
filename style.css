@@ -1,4 +1,17 @@
-.navbar-brand {
-    text-align: center;
-    font: white
+#header {
+    text-align: center !important;
+    color: white
 }
+
+#icon {
+    height: 5vw
+}
+
+.savedSearch {
+    width: 100%;
+    text-align: left;
+    margin: .1vw;
+}
+
+
+
