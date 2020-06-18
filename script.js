@@ -31,22 +31,21 @@ $(document).ready(function () {
 
   //create buttons for last searches
   function createHistoryButtons() {
-    storedSearch = getStored();
+    // storedSearch = getStored();
     $("#savedSearch").empty();
-    for (var i = 0; i < 6; i++) {
-      if (storedSearch[i] == undefined) {
-        return;
-      } else {
+
+    for (var i = 0; i < storedSearch.length; i++) {
+      // if (storedSearch[i] == undefined) {
+      //   return;
+      // } else {
         var newButton = $(
-          "<button class='savedSearch'>" + storedSearch[i] + "</button>"
-        ).on("click", function () {
-          var cityEl = $(this).text();
-          forecast(cityEl, false);
-        });
+          "<div class='row'><div class='col'><button class='btn btn-info'>" + storedSearch[i] + "</button></div></div>"
+        )
+        
         $("#savedSearch").append(newButton);
       }
     }
-  }
+  
   createHistoryButtons();
 
   //on.click for search
@@ -161,7 +160,7 @@ $(document).ready(function () {
           var timeCheck = time.includes("12:00:00");
           return timeCheck;
         });
-        // console.log(timeCheck)
+    
         for (var i = 0; i < filterArray; i++) {
           var forecast = filterArray[i];
           var fiveDayTemp = forecast.main.temp;
@@ -184,8 +183,8 @@ $(document).ready(function () {
           var fiveDayIcon = $("<img src='" + fiveDayIcon + "'/>");
           var fiveDayDate = $("<div class='date'>" + fiveDayDate + "</div>");
           var newCol = $(
-            "<div class='col card' id='forecast'" + i + "></div>").append(fiveDayDate);
-            $("#forecastDiv").append(newCol);
+            "<div class='col card' id='fiveday'" + i + "></div>").append(fiveDayDate);
+            $("#fiveday").append(newCol);
           // ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
           $("#forecast" + i).attr("src", fiveDayIcon);
           console.log(filterArray[i]);
