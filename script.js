@@ -58,7 +58,7 @@ $(document).ready(function () {
   // WHEN I view current weather conditions for that city
   // THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
 
-  function forecast(city, saveToLocal) {
+  function forecast(city) {
     //Need to get this value from local
     // event.preventDefault();
     $("#fiveDay").empty();
@@ -123,18 +123,18 @@ $(document).ready(function () {
           var uvButton = $(
             "<button id='uvButton'>" + response.value + "</button>"
           );
-          if (uvNumber <= 3) {Number.css("background-color", "green");
-          } else if (uvNumber > 7) {
-            uvNumber.css("background-color", "red");
-          } else {
-            uvNumber.css("background-color", "orange");
-          }
+          // if (uvNumber <= 3) {uvButton.css("background-color", "green");
+          // } else if (uvNumber > 7) {
+          //   uvNumber.css("background-color", "red");
+          // } else {
+          //   uvNumber.css("background-color", "orange");
+          // }
           $("#uvIndex").append("UV Index: ").append(uvButton);
           console.log("uv index", response);
         });
       });
   }
-  forecast();
+  
 
   //five day forecast
 
@@ -158,9 +158,10 @@ $(document).ready(function () {
         var forecastArray = response.list;
         var filterArray = forecastArray.filter(function (listObj) {
           var time = listObj.dt_txt;
-          var timeStamp = time.includes("12:00:00");
-          return time;
+          var timeCheck = time.includes("12:00:00");
+          return timeCheck;
         });
+        // console.log(timeCheck)
         for (var i = 0; i < filterArray; i++) {
           var forecast = filterArray[i];
           var fiveDayTemp = forecast.main.temp;
@@ -183,23 +184,23 @@ $(document).ready(function () {
           var fiveDayIcon = $("<img src='" + fiveDayIcon + "'/>");
           var fiveDayDate = $("<div class='date'>" + fiveDayDate + "</div>");
           var newCol = $(
-            "<div class='col card' id='forecast'" + i + "></div>"
-          ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
+            "<div class='col card' id='forecast'" + i + "></div>").append(fiveDayDate);
+            $("#forecastDiv").append(newCol);
+          // ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
           $("#forecast" + i).attr("src", fiveDayIcon);
-          $("#forecastDiv").append(newCol);
-          console.log(filterArray);
+          console.log(filterArray[i]);
         }
       });
   });
   //store results to local
-  if (saveToLocal) {
-    var currentCity = storedSearch();
-    //add newest city to front of storedSearch array
-    currentCity.unshift(city);
-    window.localStorage.setItem("city", JSON.stringify(currentCity));
-    $("#city").val("");
-  }
-  createHistoryButtons();
+  // if (saveToLocal) {
+  //   var currentCity = storedSearch();
+  //   //add newest city to front of storedSearch array
+  //   currentCity.unshift(city);
+  //   window.localStorage.setItem("city", JSON.stringify(currentCity));
+  //   $("#city").val("");
+  // }
+  // createHistoryButtons();
 
   // WHEN I view the UV index
   // THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
