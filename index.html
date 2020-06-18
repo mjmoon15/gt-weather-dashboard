@@ -31,54 +31,59 @@
     <title>Is it Raining?</title>
   </head>
   <body>
-   
-<!-- Main Bootstrap Search -->
-<main class="container">
-
-  <!-- Title Header -->
-  <header>
-    <nav class="navbar navbar-dark bg-dark">
-      <span class="navbar=brand mb-0 h1" id="header">Weather Dashboard</span>
-    </nav>
-
-  </header>
-
-  <!-- Enter your city to search for the weather -->
-  <div class="row">
-    <div class="col-md-4">
-      <br>
-      <!-- Card for search and search history -->
-      <div class="card">
-        <div class="card-header">
-          <strong>Find Your City</strong>
-        </div>
-        <div class="card-body">
-          <!-- Text input and search button-->
-          <form class="example" action="action_page.php">
-            <input type="text" placeholder="City.." name="search" id="city">
-            <button type="submit"><i class="fa fa-search" id="search"></i></button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- card for daily forecast and five day forecast -->
-    <div class="col-md-8">
-      <div class="card" id="search-results">
-        <div id="cityDisplay"></div>
-        <div class="weatherDisplay" id="temp"></div>
-        <div class="weatherDisplay" id="humidity"></div>
-        <div class="weatherDisplay" id="wind"></div>
-        <div class="weatherDisplay" id="uvIndex"></div>
-      </div>
-      </div>
-      <div class="row" id="fiveDay"></div>
-    </div>
-  </div>
-</main>
- 
-      
-
-
     
+  <!-- Main Bootstrap Search -->
+      <main class="container">
+
+        <!-- Title Header -->
+        <header>
+          <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar=brand mb-0 h1" id="header">Weather Dashboard</span>
+          </nav>
+
+        </header>
+
+        <!-- Enter your city to search for the weather -->
+        <div class="row">
+          <div class="col-md-4">
+            <br>
+            <!-- Card for search and search history -->
+            <div class="container">
+              <div class="row">
+                <strong>Find Your City</strong>
+              </div>
+              <div class="card-body">
+                <!-- Text input and search button-->
+                <form class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="City.." name="search" id="city">
+                  <button type="submit"><i class="fa fa-search" id="search"></i></button>
+                </form>
+              </div>
+              <div class="savedSearch"></div>
+            </div>
+          </div>
+          <!-- card for daily forecast and five day forecast -->
+          <section class="col-md-8">
+            <div class="col-md-8">
+              <div class="card" id="search-results">
+                <div id="cityDisplay"></div>
+                <div id="date-time"></div>
+                <div id="icon"></div>
+                <div class="weatherDisplay" id="temp"></div>
+                <div class="weatherDisplay" id="humidity"></div>
+                <div class="weatherDisplay" id="wind"></div>
+                <div class="weatherDisplay" id="uvIndex"></div>
+              </div>
+            </div>
+            <div class="row" id="fiveDay"></div>
+          </section>
+          </div>
+        </div>
+      </main>
+  
+        
+
+
+      
   </body>
 </html>
