@@ -119,6 +119,7 @@ $(document).ready(function () {
           method: "GET",
         }).then(function (response) {
           var uvNumber = response.value;
+          //create uv buttons and set their styling based on response value then append to html
           var uvButton = $(
             "<button id='uvButton'>" + response.value + "</button>"
           );
@@ -193,6 +194,7 @@ $(document).ready(function () {
   //store results to local
   if (saveToLocal) {
     var currentCity = storedSearch();
+    //add newest city to front of storedSearch array
     currentCity.unshift(city);
     window.localStorage.setItem("city", JSON.stringify(currentCity));
     $("#city").val("");
