@@ -38,24 +38,81 @@ $(document).ready(function () {
       // if (storedSearch[i] == undefined) {
       //   return;
       // } else {
-        var newButton = $(
-          "<div class='row'><div class='col'><button class='btn btn-info'>" + storedSearch[i] + "</button></div></div>"
-        )
-        
-        $("#savedSearch").append(newButton);
-      }
+      var newButton = $(
+        "<div class='row'><div class='col'><button class='btn btn-info'>" +
+          storedSearch[i] +
+          "</button></div></div>"
+      );
+
+      $("#savedSearch").append(newButton);
     }
-  
+  }
+
   createHistoryButtons();
 
   //on.click for search
   $("#search").on("click", function () {
     var cityEl = $("#city");
-    forecast(cityEl.val(), true);
+    forecast(cityEl.val());
+    getFiveDayForecast(cityEl.val())
   });
 
   // WHEN I view current weather conditions for that city
   // THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
+
+
+
+  function getFiveDayForecast(city){
+    console.log('kev', city)
+    var queryURL ="https://api.openweathermap.org/data/2.5/forecast?q=" +city +"&units=imperial&appid=" +apiKey;
+    //ajax call for api data
+    $.ajax({
+      url: queryURL,
+      method: "GET",
+    }).then(function (response) {
+      var forecastArray = response.list;
+      var filterArray = forecastArray.filter(function (listObj) {
+        var time = listObj.dt_txt;
+        var timeCheck = time.includes("12:00:00");
+        return timeCheck;
+      });
+
+      for (var i = 0; i < filterArray.length; i++) {
+        // defined values
+        var wrapper = $(`<div style='border: 1px solid black' class='wrapper-${i}'></div>`).appendTo("#fiveDay");
+        var forecast = filterArray[i];
+        var fiveDayTemp = forecast.main.temp;
+        var fiveDayHumidity = forecast.main.humidity + "%";
+        var fiveDayDate = moment()
+          .add(i + 1, "d")
+          .format("MMMM Do");
+        var fiveDayIcon =
+          "https://openweathermap.org/img/w/" +
+          forecast.weather[0].icon +
+          ".png";
+
+        // assign  those values to the proper id, class, etc. in your html using jquery
+
+        $("<div class='date'>" + fiveDayDate + "</div>").appendTo(`.wrapper-${i}`);
+        $("<img src='" + fiveDayIcon + "'/>").appendTo(`.wrapper-${i}`);
+        $(
+          "<div class='temperature'>Temp: " +
+            Math.floor(fiveDayTemp) +
+            "°F</div>"
+        ).appendTo(`.wrapper-${i}`);
+
+        $(
+          "<div id='newHumid'>Humidity: <br>" + fiveDayHumidity + "</div>"
+        ).appendTo(`.wrapper-${i}`);
+
+        // var newCol = $(
+        //   "<div class='col card' id='fiveday'" + i + "></div>").append(fiveDayDate);
+        //   $("#fiveday").append(newCol);
+        // ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
+        // $("#forecast" + i).attr("src", fiveDayIcon);
+      }
+    });
+  }
 
   function forecast(city) {
     //Need to get this value from local
@@ -122,75 +179,81 @@ $(document).ready(function () {
           var uvButton = $(
             "<button id='uvButton'>" + response.value + "</button>"
           );
-          // if (uvNumber <= 3) {uvButton.css("background-color", "green");
-          // } else if (uvNumber > 7) {
-          //   uvNumber.css("background-color", "red");
-          // } else {
-          //   uvNumber.css("background-color", "orange");
-          // }
+          if (uvNumber <= 3) {uvButton.css("background-color", "green");
+          } else if (uvNumber > 7) {
+            uvButton.css("background-color", "red");
+          } else {
+            uvButton.css("background-color", "orange");
+          }
           $("#uvIndex").append("UV Index: ").append(uvButton);
           console.log("uv index", response);
         });
       });
   }
-  
 
   //five day forecast
 
-  $("#search").on("click", function (event) {
-    event.preventDefault();
-    var city = $("#city").val();
-    // queryURL for API call
+  // $("#search").on("click", function (event) {
+  //   event.preventDefault();
+  //   var city = $("#city").val();
+  //   // queryURL for API call
 
-    var queryURL =
-      "https://api.openweathermap.org/data/2.5/forecast?q=" +
-      city +
-      "&units=imperial&appid=" +
-      apiKey;
-    //ajax call for api data
-    $.ajax({
-      url: queryURL,
-      method: "GET",
-    })
-      // Promise retrieved data in "response"
-      .then(function (response) {
-        var forecastArray = response.list;
-        var filterArray = forecastArray.filter(function (listObj) {
-          var time = listObj.dt_txt;
-          var timeCheck = time.includes("12:00:00");
-          return timeCheck;
-        });
-    
-        for (var i = 0; i < filterArray; i++) {
-          var forecast = filterArray[i];
-          var fiveDayTemp = forecast.main.temp;
-          var fiveDayHumidity = forecast.main.humidity + "%";
-          var fiveDayDate = moment()
-            .add(i + 1, "d")
-            .format("MMMM Do");
-          var fiveDayIcon =
-            "https://openweathermap.org/img/w/" +
-            forecast.weather[0].icon +
-            ".png";
-          var fiveDayTemp = $(
-            "<div class='temperature'>Temp: " +
-              Math.floor(fiveDayTemp) +
-              "°F</div>"
-          );
-          var fiveDayHumidity = $(
-            "<div id='newHumid'>Humidity: <br>" + fiveDayHumidity + "</div>"
-          );
-          var fiveDayIcon = $("<img src='" + fiveDayIcon + "'/>");
-          var fiveDayDate = $("<div class='date'>" + fiveDayDate + "</div>");
-          var newCol = $(
-            "<div class='col card' id='fiveday'" + i + "></div>").append(fiveDayDate);
-            $("#fiveday").append(newCol);
-          // ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
-          $("#forecast" + i).attr("src", fiveDayIcon);
-          console.log(filterArray[i]);
-        }
-      });
-  });
+  //   var queryURL =
+  //     "https://api.openweathermap.org/data/2.5/forecast?q=" +
+  //     city +
+  //     "&units=imperial&appid=" +
+  //     apiKey;
+  //   //ajax call for api data
+  //   $.ajax({
+  //     url: queryURL,
+  //     method: "GET",
+  //   })
+  //     // Promise retrieved data in "response"
+  //     .then(function (response) {
+  //       var forecastArray = response.list;
+  //       var filterArray = forecastArray.filter(function (listObj) {
+  //         var time = listObj.dt_txt;
+  //         var timeCheck = time.includes("12:00:00");
+  //         return timeCheck;
+  //       });
+
+  //       for (var i = 0; i < filterArray.length; i++) {
+  //         // defined values
+  //         var wrapper = $(`<div style='border: 1px solid black' class='wrapper-${i}'></div>`).appendTo("#fiveDay");
+  //         var forecast = filterArray[i];
+  //         var fiveDayTemp = forecast.main.temp;
+  //         var fiveDayHumidity = forecast.main.humidity + "%";
+  //         var fiveDayDate = moment()
+  //           .add(i + 1, "d")
+  //           .format("MMMM Do");
+  //         var fiveDayIcon =
+  //           "https://openweathermap.org/img/w/" +
+  //           forecast.weather[0].icon +
+  //           ".png";
+
+  //         // assign  those values to the proper id, class, etc. in your html using jquery
+
+  //         $("<div class='date'>" + fiveDayDate + "</div>").appendTo(`.wrapper-${i}`);
+  //         $("<img src='" + fiveDayIcon + "'/>").appendTo(`.wrapper-${i}`);
+  //         $(
+  //           "<div class='temperature'>Temp: " +
+  //             Math.floor(fiveDayTemp) +
+  //             "°F</div>"
+  //         ).appendTo(`.wrapper-${i}`);
+
+  //         $(
+  //           "<div id='newHumid'>Humidity: <br>" + fiveDayHumidity + "</div>"
+  //         ).appendTo(`.wrapper-${i}`);
+
+  //         // var newCol = $(
+  //         //   "<div class='col card' id='fiveday'" + i + "></div>").append(fiveDayDate);
+  //         //   $("#fiveday").append(newCol);
+  //         // ).append(fiveDayDate, fiveDayIcon, fiveDayTemp, fiveDayHumidity);
+  //         // $("#forecast" + i).attr("src", fiveDayIcon);
+  //         console.log(filterArray[i]);
+  //       }
+  //     });
+  // });
   //store results to local
   // if (saveToLocal) {
   //   var currentCity = storedSearch();
